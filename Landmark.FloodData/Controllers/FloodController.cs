@@ -4,16 +4,19 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Landmark.FloodData.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using WebGrease;
 
 namespace Landmark.FloodData.Controllers
 {
-	public class FloodController : ApiController
+    [ApiController]
+	public class FloodController : ControllerBase
 	{
-		public async Task<IHttpActionResult> Get()
+        [Route("Flood")]
+        [Produces("application/xml")]
+		public async Task<ActionResult> Get()
 		{
 			try
 			{
@@ -37,11 +40,13 @@ namespace Landmark.FloodData.Controllers
 			}
 			catch (Exception e)
 			{
-				return InternalServerError();
+				return  StatusCode(StatusCodes.Status500InternalServerError);
 			}
 		}
 
-		public async Task<IHttpActionResult> Get(string eaAreaName)
+        [Route("Flood/{region}")]
+        [Produces("application/xml")]
+		public async Task<ActionResult> Get(string eaAreaName)
 		{
 			try
 			{
@@ -67,7 +72,7 @@ namespace Landmark.FloodData.Controllers
 			}
 			catch (Exception e)
 			{
-				return InternalServerError();
+                return StatusCode(StatusCodes.Status500InternalServerError);
 			}
 		}
 

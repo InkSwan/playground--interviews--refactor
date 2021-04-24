@@ -1,5 +1,6 @@
 bin
 obj
+*.suo
 /Landmark.FloodData/*.user
 packages
 /.vs/Landmark.FloodData/v15/Server/sqlite3
