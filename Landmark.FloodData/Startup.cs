@@ -1,4 +1,6 @@
 using System.Net.Http;
+using Landmark.FloodData.Controllers;
+using Landmark.FloodData.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,8 +23,9 @@ namespace Landmark.FloodData
         {
             services.AddControllers()
                 .AddXmlSerializerFormatters();
-            
+
             services.AddScoped<HttpMessageHandler, HttpClientHandler>();
+            services.AddScoped<IEnvironmentAgencyGateway, EnvironmentAgencyGateway>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
