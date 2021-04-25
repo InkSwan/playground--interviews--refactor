@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Landmark.FloodData.Processor.Model;
 
-namespace Landmark.FloodData.Models
+namespace Landmark.FloodData.Processor
 {
     public class FloodDataProcessor
     {

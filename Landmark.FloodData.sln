@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Landmark.FloodData", "Landm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloodDataTest", "FloodDataTest\FloodDataTest.csproj", "{413E1183-2C7B-4039-BE5A-70A452F70A40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Landmark.FloodData.Processor", "Landmark.FloodData.Processor\Landmark.FloodData.Processor.csproj", "{3365E8F3-2C45-4926-A522-7AECF4D43D32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Landmark.FloodData.Gateway", "Landmark.EnvironmentAgencyGateway\Landmark.FloodData.Gateway.csproj", "{4A830A5F-6F97-4A32-92A5-EB603C718F62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{413E1183-2C7B-4039-BE5A-70A452F70A40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{413E1183-2C7B-4039-BE5A-70A452F70A40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{413E1183-2C7B-4039-BE5A-70A452F70A40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3365E8F3-2C45-4926-A522-7AECF4D43D32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3365E8F3-2C45-4926-A522-7AECF4D43D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3365E8F3-2C45-4926-A522-7AECF4D43D32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3365E8F3-2C45-4926-A522-7AECF4D43D32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A830A5F-6F97-4A32-92A5-EB603C718F62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A830A5F-6F97-4A32-92A5-EB603C718F62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A830A5F-6F97-4A32-92A5-EB603C718F62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A830A5F-6F97-4A32-92A5-EB603C718F62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

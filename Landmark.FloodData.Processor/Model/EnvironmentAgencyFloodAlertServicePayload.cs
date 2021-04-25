@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Landmark.FloodData.Models
+namespace Landmark.FloodData.Processor.Model
 {
 	public class EnvironmentAgencyFloodAlertServicePayload
 	{

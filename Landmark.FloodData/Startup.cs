@@ -1,6 +1,6 @@
 using System.Net.Http;
-using Landmark.FloodData.Controllers;
-using Landmark.FloodData.Models;
+using Landmark.FloodData.Gateway;
+using Landmark.FloodData.Processor;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

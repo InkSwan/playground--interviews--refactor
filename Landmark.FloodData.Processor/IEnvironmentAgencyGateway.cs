@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Landmark.FloodData.Processor.Model;
 
-namespace Landmark.FloodData.Models
+namespace Landmark.FloodData.Processor
 {
     public interface IEnvironmentAgencyGateway
     {

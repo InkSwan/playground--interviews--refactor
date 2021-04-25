@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Landmark.FloodData.Models
+namespace Landmark.FloodData.Processor.Model
 {
 	public class Flood
 	{

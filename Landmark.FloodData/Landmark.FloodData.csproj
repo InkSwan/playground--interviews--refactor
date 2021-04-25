@@ -9,5 +9,14 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Landmark.EnvironmentAgencyGateway\Landmark.FloodData.Gateway.csproj" />
+    <ProjectReference Include="..\Landmark.FloodData.Processor\Landmark.FloodData.Processor.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 
 </Project>

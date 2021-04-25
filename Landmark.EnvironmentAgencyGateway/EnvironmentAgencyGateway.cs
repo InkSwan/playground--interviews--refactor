@@ -2,9 +2,11 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Landmark.FloodData.Processor;
+using Landmark.FloodData.Processor.Model;
 using Newtonsoft.Json;
 
-namespace Landmark.FloodData.Models
+namespace Landmark.FloodData.Gateway
 {
     public class EnvironmentAgencyGateway : IEnvironmentAgencyGateway
     {
