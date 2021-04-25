@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Landmark.FloodData.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -21,75 +20,39 @@ namespace Landmark.FloodData.Controllers
             _httpMessageHandler = httpMessageHandler;
         }
 
-        [Route("Flood")]
+        [Route("Flood/{region?}")]
         [Produces("application/xml")]
-		public async Task<ActionResult> Get()
-		{
-			try
-			{
-				var environmentAgencyApiResponse = await GetEnvironmentAgencyData();
+        public async Task<ActionResult> Get(string region)
+        {
+            var environmentAgencyFloodAlerts = await GetEnvironmentAgencyData();
+            if (environmentAgencyFloodAlerts == null)
+                return NotFound();
+            
+            var processedData = ProcessDataData(environmentAgencyFloodAlerts);
 
-				if (environmentAgencyApiResponse.StatusCode != HttpStatusCode.OK)
-				{
-					return NotFound();
-				}
+            if (region == null)
+                return Ok(processedData);
 
-				var environmentAgencyApiResponseContent =
-					await environmentAgencyApiResponse.Content.ReadAsStringAsync();
+            var filteredData = FilterData(processedData, region);
+            return Ok(filteredData);
+        }
 
-				var environmentAgencyFloodAlerts =
-					JsonConvert.DeserializeObject<EnvironmentAgencyFloodAlertServicePayload>(
-						environmentAgencyApiResponseContent);
+		private async Task<EnvironmentAgencyFloodAlertServicePayload> GetEnvironmentAgencyData()
+        {
+            using var client = new HttpClient(_httpMessageHandler) {BaseAddress = new Uri("http://environment.data.gov.uk")};
+            var response = await client.GetAsync("flood-monitoring/id/floods");
+            if (response.StatusCode != HttpStatusCode.OK)
+                return null;
 
-				var processedData = ProcessDataData(environmentAgencyFloodAlerts);
+            var environmentAgencyApiResponseContent =
+                await response.Content.ReadAsStringAsync();
 
-				return Ok(processedData);
-			}
-			catch (Exception e)
-			{
-				return  StatusCode(StatusCodes.Status500InternalServerError);
-			}
-		}
+            var environmentAgencyFloodAlerts =
+                JsonConvert.DeserializeObject<EnvironmentAgencyFloodAlertServicePayload>(
+                    environmentAgencyApiResponseContent);
 
-        [Route("Flood/{region}")]
-        [Produces("application/xml")]
-		public async Task<ActionResult> Get(string region)
-		{
-			try
-			{
-				var environmentAgencyApiResponse = await GetEnvironmentAgencyData();
-
-				if (environmentAgencyApiResponse.StatusCode != HttpStatusCode.OK)
-				{
-					return NotFound();
-				}
-
-				var environmentAgencyApiResponseContent =
-					await environmentAgencyApiResponse.Content.ReadAsStringAsync();
-
-				var environmentAgencyFloodAlerts =
-					JsonConvert.DeserializeObject<EnvironmentAgencyFloodAlertServicePayload>(
-						environmentAgencyApiResponseContent);
-
-				var processedData = ProcessDataData(environmentAgencyFloodAlerts);
-
-				var filteredData = FilterData(processedData, region);
-
-				return Ok(filteredData);
-			}
-			catch (Exception e)
-			{
-                return StatusCode(StatusCodes.Status500InternalServerError);
-			}
-		}
-
-		private async Task<dynamic> GetEnvironmentAgencyData()
-		{
-			using (var client = new HttpClient(_httpMessageHandler) {BaseAddress = new Uri("http://environment.data.gov.uk")})
-			{
-				return await client.GetAsync("flood-monitoring/id/floods");
-			}
-		}
+            return environmentAgencyFloodAlerts;
+        }
 
 		private IEnumerable<Flood> ProcessDataData(EnvironmentAgencyFloodAlertServicePayload environmentAgencyFloodAlerts)
 		{
