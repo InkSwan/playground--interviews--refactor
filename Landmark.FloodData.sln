@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30330.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Landmark.FloodData", "Landmark.FloodData\Landmark.FloodData.csproj", "{3CDA91CB-54A8-4AEA-9BE5-6A3635A954AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Landmark.FloodData", "Landmark.FloodData\Landmark.FloodData.csproj", "{3CDA91CB-54A8-4AEA-9BE5-6A3635A954AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloodDataTest", "FloodDataTest\FloodDataTest.csproj", "{413E1183-2C7B-4039-BE5A-70A452F70A40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{3CDA91CB-54A8-4AEA-9BE5-6A3635A954AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CDA91CB-54A8-4AEA-9BE5-6A3635A954AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CDA91CB-54A8-4AEA-9BE5-6A3635A954AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{413E1183-2C7B-4039-BE5A-70A452F70A40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{413E1183-2C7B-4039-BE5A-70A452F70A40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{413E1183-2C7B-4039-BE5A-70A452F70A40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{413E1183-2C7B-4039-BE5A-70A452F70A40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

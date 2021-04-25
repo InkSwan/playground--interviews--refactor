@@ -14,6 +14,13 @@ namespace Landmark.FloodData.Controllers
     [ApiController]
 	public class FloodController : ControllerBase
 	{
+        private readonly HttpMessageHandler _httpMessageHandler;
+
+        public FloodController(HttpMessageHandler httpMessageHandler)
+        {
+            _httpMessageHandler = httpMessageHandler;
+        }
+
         [Route("Flood")]
         [Produces("application/xml")]
 		public async Task<ActionResult> Get()
@@ -46,7 +53,7 @@ namespace Landmark.FloodData.Controllers
 
         [Route("Flood/{region}")]
         [Produces("application/xml")]
-		public async Task<ActionResult> Get(string eaAreaName)
+		public async Task<ActionResult> Get(string region)
 		{
 			try
 			{
@@ -66,7 +73,7 @@ namespace Landmark.FloodData.Controllers
 
 				var processedData = ProcessDataData(environmentAgencyFloodAlerts);
 
-				var filteredData = FilterData(processedData, eaAreaName);
+				var filteredData = FilterData(processedData, region);
 
 				return Ok(filteredData);
 			}
@@ -78,7 +85,7 @@ namespace Landmark.FloodData.Controllers
 
 		private async Task<dynamic> GetEnvironmentAgencyData()
 		{
-			using (var client = new HttpClient {BaseAddress = new Uri("http://environment.data.gov.uk")})
+			using (var client = new HttpClient(_httpMessageHandler) {BaseAddress = new Uri("http://environment.data.gov.uk")})
 			{
 				return await client.GetAsync("flood-monitoring/id/floods");
 			}
