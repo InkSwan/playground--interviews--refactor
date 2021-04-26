@@ -26,6 +26,8 @@ namespace Landmark.FloodData
 
             services.AddScoped<HttpMessageHandler, HttpClientHandler>();
             services.AddScoped<IEnvironmentAgencyGateway, EnvironmentAgencyGateway>();
+            services.AddScoped<FloodDataProcessor, FloodDataProcessor>();
+            services.AddScoped<IFloodActionStrategy, HardCodedFloodActionStrategy>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

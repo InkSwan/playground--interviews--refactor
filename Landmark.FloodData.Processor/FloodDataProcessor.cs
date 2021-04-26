@@ -7,70 +7,45 @@ namespace Landmark.FloodData.Processor
 {
     public class FloodDataProcessor
     {
-        public IEnumerable<Flood> ProcessDataData(EnvironmentAgencyFloodAlertServicePayload environmentAgencyFloodAlerts)
+        private readonly IFloodActionStrategy _floodActionStrategy;
+
+        public FloodDataProcessor(IFloodActionStrategy floodActionStrategy)
         {
-            var floodData = new List<Flood>();
-
-            if (environmentAgencyFloodAlerts?.Items == null || !environmentAgencyFloodAlerts.Items.Any())
-            {
-                return floodData;
-            }
-
-            foreach (var item in environmentAgencyFloodAlerts.Items)
-            {
-                var itemId = LastSegmentOfUri(item.Id);
-                
-                var flood = new Flood
-                {
-                    Id = itemId,
-                    Region = item.EaRegionName,
-                    FloodAreaId = item.FloodAreaId,
-                    EaAreaName = item.EaAreaName,
-                    TimeRaised = item.TimeRaised,
-                    Severity = (SeverityLevel) item.SeverityLevel
-                };
-
-                switch (item.EaAreaName.ToLower())
-                {
-                    case "yorkshire":
-                    case "west midlands":
-                    {
-                        flood.Action = FloodAction.MonitorHourly;
-                        break;
-                    }
-                    case "east anglia":
-                    {
-                        flood.Action = FloodAction.MonitorDaily;
-                        break;
-                    }
-                    default:
-                    {
-                        flood.Action = FloodAction.Ignore;
-                        break;
-                    }
-                }
-
-                floodData.Add(flood);
-            }
-
-            return floodData;
+            _floodActionStrategy = floodActionStrategy;
         }
 
-        public IEnumerable<Flood> FilterData(IEnumerable<Flood> inputFloodData, string eaAreaName)
+        public List<Flood> ProcessDataData(EnvironmentAgencyFloodAlertServicePayload environmentAgencyFloodAlerts)
         {
-            var floodData = new List<Flood>();
+            if (environmentAgencyFloodAlerts?.Items == null)
+                return new List<Flood>(); 
 
-            foreach (var item in inputFloodData)
+            return environmentAgencyFloodAlerts.Items
+                .Select(ProcessFloodItem)
+                .ToList();
+        }
+
+        private Flood ProcessFloodItem(EnvironmentAgencyFloodAlert item)
+        {
+            var flood = new Flood
             {
-                if (!string.Equals(item.EaAreaName, eaAreaName, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    continue;
-                }
+                Id = LastSegmentOfUri(item.Id),
+                Region = item.EaRegionName,
+                FloodAreaId = item.FloodAreaId,
+                EaAreaName = item.EaAreaName,
+                TimeRaised = item.TimeRaised,
+                Severity = (SeverityLevel) item.SeverityLevel
+            };
 
-                floodData.Add(item);
-            }
+            flood.Action = _floodActionStrategy.DetermineAction(flood);
 
-            return floodData;
+            return flood;
+        }
+
+        public List<Flood> FilterData(IEnumerable<Flood> inputFloodData, string eaAreaName)
+        {
+            return inputFloodData
+                .Where(item => string.Equals(item.EaAreaName, eaAreaName, StringComparison.CurrentCultureIgnoreCase))
+                .ToList();
         }
 
         private static string LastSegmentOfUri(string id)

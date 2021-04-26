@@ -8,12 +8,18 @@ namespace Landmark.FloodData.Processor.Test
 {
     public class FloodDataProcessorTests
     {
+        private FloodDataProcessor _target;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _target = new FloodDataProcessor(new HardCodedFloodActionStrategy());
+        }
+
         [Test]
         public void ProcessData_WithNullPayload_ReturnsEmptyList()
         {
-            var target = new FloodDataProcessor();
-
-            var result = target.ProcessDataData(null);
+            var result = _target.ProcessDataData(null);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(new List<Flood>(), result);
@@ -22,10 +28,9 @@ namespace Landmark.FloodData.Processor.Test
         [Test]
         public void ProcessData_WithEmptyPayload_ReturnsEmptyList()
         {
-            var target = new FloodDataProcessor();
             var emptyPayload = new EnvironmentAgencyFloodAlertServicePayload();
 
-            var result = target.ProcessDataData(emptyPayload);
+            var result = _target.ProcessDataData(emptyPayload);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(new List<Flood>(), result);
@@ -34,13 +39,12 @@ namespace Landmark.FloodData.Processor.Test
         [Test]
         public void ProcessData_WithEmptyPayloadItems_ReturnsEmptyList()
         {
-            var target = new FloodDataProcessor();
             var emptyPayload = new EnvironmentAgencyFloodAlertServicePayload
             {
                 Items = new List<EnvironmentAgencyFloodAlert>()
             };
 
-            var result = target.ProcessDataData(emptyPayload);
+            var result = _target.ProcessDataData(emptyPayload);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(new List<Flood>(), result);
@@ -49,7 +53,6 @@ namespace Landmark.FloodData.Processor.Test
         [Test]
         public void ProcessData_WithPayloadWithSingleItem_ReturnsSingleFlood()
         {
-            var target = new FloodDataProcessor();
             var payload = new EnvironmentAgencyFloodAlertServicePayload
             {
                 Items = new List<EnvironmentAgencyFloodAlert>
@@ -65,7 +68,7 @@ namespace Landmark.FloodData.Processor.Test
                 }
             };
 
-            var result = target.ProcessDataData(payload);
+            var result = _target.ProcessDataData(payload);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count());
@@ -81,7 +84,6 @@ namespace Landmark.FloodData.Processor.Test
         [Test]
         public void ProcessData_WithSeveralItems_ReturnsList()
         {
-            var target = new FloodDataProcessor();
             var payload = new EnvironmentAgencyFloodAlertServicePayload
             {
                 Items = new List<EnvironmentAgencyFloodAlert>
@@ -104,7 +106,7 @@ namespace Landmark.FloodData.Processor.Test
                 }
             };
 
-            var result = target.ProcessDataData(payload);
+            var result = _target.ProcessDataData(payload);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Count());
@@ -117,7 +119,6 @@ namespace Landmark.FloodData.Processor.Test
         [TestCase("Cornwall", FloodAction.Ignore)]
         public void ProcessData_WithCertainRegions_SetsAction(string region, FloodAction expectedAction)
         {
-            var target = new FloodDataProcessor();
             var payload = new EnvironmentAgencyFloodAlertServicePayload
             {
                 Items = new List<EnvironmentAgencyFloodAlert>
@@ -130,7 +131,7 @@ namespace Landmark.FloodData.Processor.Test
                 }
             };
 
-            var result = target.ProcessDataData(payload);
+            var result = _target.ProcessDataData(payload);
 
             Assert.AreEqual(expectedAction, result.First().Action);
         }
@@ -138,7 +139,6 @@ namespace Landmark.FloodData.Processor.Test
         [Test]
         public void Filter_WithRegionInList_ReturnsFloodForRegion()
         {
-            var target = new FloodDataProcessor();
             var floods = new List<Flood>
             {
                 new Flood {EaAreaName = "Cornwall"},
@@ -146,7 +146,7 @@ namespace Landmark.FloodData.Processor.Test
                 new Flood {EaAreaName = "East"}
             };
 
-            var result = target.FilterData(floods, "West");
+            var result = _target.FilterData(floods, "West");
 
             CollectionAssert.AreEqual(new[] {"West"}, result.Select(flood => flood.EaAreaName));
         }
@@ -154,7 +154,6 @@ namespace Landmark.FloodData.Processor.Test
         [Test]
         public void Filter_WithRegionNotInList_ReturnsNoFloods()
         {
-            var target = new FloodDataProcessor();
             var floods = new List<Flood>
             {
                 new Flood {EaAreaName = "Cornwall"},
@@ -162,7 +161,7 @@ namespace Landmark.FloodData.Processor.Test
                 new Flood {EaAreaName = "East"}
             };
 
-            var result = target.FilterData(floods, "NotThere");
+            var result = _target.FilterData(floods, "NotThere");
 
             Assert.AreEqual(0, result.Count());
         }
@@ -172,7 +171,6 @@ namespace Landmark.FloodData.Processor.Test
         [TestCase("http://newdept.data.gov.uk/flood-monitoring/id/floods/104684")]
         public void ProcessData_WithIdWithDifferentUrl_SetsIdCorrectly(string uriId)
         {
-            var target = new FloodDataProcessor();
             var payload = new EnvironmentAgencyFloodAlertServicePayload
             {
                 Items = new List<EnvironmentAgencyFloodAlert>
@@ -185,7 +183,7 @@ namespace Landmark.FloodData.Processor.Test
                 }
             };
 
-            var result = target.ProcessDataData(payload);
+            var result = _target.ProcessDataData(payload);
 
             Assert.AreEqual("104684", result.First().Id);
 

@@ -11,10 +11,10 @@ namespace Landmark.FloodData.Controllers
         private readonly IEnvironmentAgencyGateway _environmentAgencyGateway;
         private readonly FloodDataProcessor _floodDataProcessor;
 
-        public FloodController(IEnvironmentAgencyGateway environmentAgencyGateway)
+        public FloodController(IEnvironmentAgencyGateway environmentAgencyGateway, FloodDataProcessor floodDataProcessor)
         {
             _environmentAgencyGateway = environmentAgencyGateway;
-            _floodDataProcessor = new FloodDataProcessor();
+            _floodDataProcessor = floodDataProcessor;
         }
 
         [Route("Flood/{region?}")]
