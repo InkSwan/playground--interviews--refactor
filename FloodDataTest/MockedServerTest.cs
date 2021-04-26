@@ -1,15 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Landmark.FloodData;
+using Landmark.FloodData.Processor.Model;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Moq.Protected;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace FloodDataTest
@@ -47,12 +51,11 @@ namespace FloodDataTest
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var content = await response.Content.ReadAsStringAsync();
-            StringAssert.Contains("<ArrayOfFlood", content);
-            StringAssert.Contains("<EaAreaName>Cornwall</EaAreaName>", content);
-            StringAssert.Contains("<EaAreaName>North</EaAreaName>", content);
-            StringAssert.Contains("<EaAreaName>West</EaAreaName>", content);
-            StringAssert.Contains("<EaAreaName>Kent and South London</EaAreaName>", content);
-            StringAssert.Contains("<EaAreaName>Eastern</EaAreaName>", content);
+            var floods = JsonConvert.DeserializeObject<List<Flood>>(content);
+            Assert.IsInstanceOf<List<Flood>>(floods);
+            CollectionAssert.IsSupersetOf(
+                floods.Select(flood => flood.EaAreaName),
+                new[]{ "Cornwall", "North", "West", "Kent and South London", "Eastern"});
         }
 
 
@@ -65,11 +68,10 @@ namespace FloodDataTest
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var content = await response.Content.ReadAsStringAsync();
-            StringAssert.Contains("<EaAreaName>Cornwall</EaAreaName>", content);
-            StringAssert.DoesNotContain("<EaAreaName>North</EaAreaName>", content);
-            StringAssert.DoesNotContain("<EaAreaName>West</EaAreaName>", content);
-            StringAssert.DoesNotContain("<EaAreaName>Kent and South London</EaAreaName>", content);
-            StringAssert.DoesNotContain("<EaAreaName>Eastern</EaAreaName>", content);
+            var floods = JsonConvert.DeserializeObject<List<Flood>>(content);
+            Assert.IsInstanceOf<List<Flood>>(floods);
+            CollectionAssert.AreEqual(new[] { "Cornwall" },
+                floods.Select(flood => flood.EaAreaName).Distinct());
         }
 
         [Test]

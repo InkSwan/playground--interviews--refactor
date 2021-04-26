@@ -17,8 +17,8 @@ namespace Landmark.FloodData.Controllers
             _floodDataProcessor = floodDataProcessor;
         }
 
+        [HttpGet]
         [Route("Flood/{region?}")]
-        [Produces("application/xml")]
         public async Task<ActionResult> Get(string region)
         {
             var environmentAgencyFloodAlerts = await _environmentAgencyGateway.GetEnvironmentAgencyData();
