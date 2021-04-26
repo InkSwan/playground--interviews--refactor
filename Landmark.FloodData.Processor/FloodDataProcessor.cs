@@ -11,7 +11,7 @@ namespace Landmark.FloodData.Processor
         {
             var floodData = new List<Flood>();
 
-            if (environmentAgencyFloodAlerts == null || !environmentAgencyFloodAlerts.Items.Any())
+            if (environmentAgencyFloodAlerts?.Items == null ||  !environmentAgencyFloodAlerts.Items.Any())
             {
                 return floodData;
             }
