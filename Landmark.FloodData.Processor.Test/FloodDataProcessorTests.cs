@@ -13,7 +13,7 @@ namespace Landmark.FloodData.Processor.Test
         {
             var target = new FloodDataProcessor();
 
-            var result =target.ProcessDataData(null);
+            var result = target.ProcessDataData(null);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(new List<Flood>(), result);
@@ -59,7 +59,7 @@ namespace Landmark.FloodData.Processor.Test
                         Id = "http://environment.data.gov.uk/flood-monitoring/id/floods/104684",
                         EaAreaName = "Cornwall",
                         FloodAreaId = "114WAFT1W10A00",
-                        TimeRaised = new DateTime(2021,04,26,17,52,0),
+                        TimeRaised = new DateTime(2021, 04, 26, 17, 52, 0),
                         SeverityLevel = 4
                     }
                 }
@@ -148,7 +148,7 @@ namespace Landmark.FloodData.Processor.Test
 
             var result = target.FilterData(floods, "West");
 
-            CollectionAssert.AreEqual(new []{"West"}, result.Select(flood => flood.EaAreaName));
+            CollectionAssert.AreEqual(new[] {"West"}, result.Select(flood => flood.EaAreaName));
         }
 
         [Test]
@@ -165,6 +165,30 @@ namespace Landmark.FloodData.Processor.Test
             var result = target.FilterData(floods, "NotThere");
 
             Assert.AreEqual(0, result.Count());
+        }
+
+        [TestCase("https://environment.data.gov.uk/flood-monitoring/id/floods/104684")]
+        [TestCase("https://environment.data.gov.uk/flood-monitoring/id/floods/104684/")]
+        [TestCase("http://newdept.data.gov.uk/flood-monitoring/id/floods/104684")]
+        public void ProcessData_WithIdWithDifferentUrl_SetsIdCorrectly(string uriId)
+        {
+            var target = new FloodDataProcessor();
+            var payload = new EnvironmentAgencyFloodAlertServicePayload
+            {
+                Items = new List<EnvironmentAgencyFloodAlert>
+                {
+                    new EnvironmentAgencyFloodAlert
+                    {
+                        Id = uriId,
+                        EaAreaName = "West",
+                    }
+                }
+            };
+
+            var result = target.ProcessDataData(payload);
+
+            Assert.AreEqual("104684", result.First().Id);
+
         }
     }
 }

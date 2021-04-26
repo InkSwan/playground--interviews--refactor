@@ -11,15 +11,15 @@ namespace Landmark.FloodData.Processor
         {
             var floodData = new List<Flood>();
 
-            if (environmentAgencyFloodAlerts?.Items == null ||  !environmentAgencyFloodAlerts.Items.Any())
+            if (environmentAgencyFloodAlerts?.Items == null || !environmentAgencyFloodAlerts.Items.Any())
             {
                 return floodData;
             }
 
             foreach (var item in environmentAgencyFloodAlerts.Items)
             {
-                var itemId = item.Id.Replace("http://environment.data.gov.uk/flood-monitoring/id/floods/", "");
-
+                var itemId = LastSegmentOfUri(item.Id);
+                
                 var flood = new Flood
                 {
                     Id = itemId,
@@ -71,6 +71,11 @@ namespace Landmark.FloodData.Processor
             }
 
             return floodData;
+        }
+
+        private static string LastSegmentOfUri(string id)
+        {
+            return id.Split("/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Last();
         }
     }
 }
