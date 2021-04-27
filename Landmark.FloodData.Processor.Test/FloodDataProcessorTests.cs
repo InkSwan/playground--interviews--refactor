@@ -113,8 +113,8 @@ namespace Landmark.FloodData.Processor.Test
             CollectionAssert.AreEqual(new[] {"1", "2", "3"}, result.Select(flood => flood.Id));
         }
 
-        [TestCase("Cornwall", FloodAction.Ignore)]
         [TestCase("Yorkshire", FloodAction.MonitorHourly)]
+        [TestCase("west midlands", FloodAction.MonitorHourly)]
         [TestCase("East Anglia", FloodAction.MonitorDaily)]
         [TestCase("Cornwall", FloodAction.Ignore)]
         public void ProcessData_WithCertainRegions_SetsAction(string region, FloodAction expectedAction)

@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Landmark.FloodData.Processo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Landmark.FloodData.Gateway", "Landmark.EnvironmentAgencyGateway\Landmark.FloodData.Gateway.csproj", "{4A830A5F-6F97-4A32-92A5-EB603C718F62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Landmark.FloodData.Processor.Test", "Landmark.FloodData.Processor.Test\Landmark.FloodData.Processor.Test.csproj", "{46D54703-9DB3-48AD-93F7-BAFD962B3DE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Landmark.FloodData.Processor.Test", "Landmark.FloodData.Processor.Test\Landmark.FloodData.Processor.Test.csproj", "{46D54703-9DB3-48AD-93F7-BAFD962B3DE6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{13493A7B-F5E8-4E66-88E5-68A6896FBFC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{413E1183-2C7B-4039-BE5A-70A452F70A40} = {13493A7B-F5E8-4E66-88E5-68A6896FBFC6}
+		{46D54703-9DB3-48AD-93F7-BAFD962B3DE6} = {13493A7B-F5E8-4E66-88E5-68A6896FBFC6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38CEF66A-7ECB-4983-9362-19A8EEB676B4}
