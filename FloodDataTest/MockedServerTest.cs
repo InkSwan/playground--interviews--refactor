@@ -98,6 +98,18 @@ namespace FloodDataTest
             Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
+        [Test]
+        public async Task GetFlood_ReturnJsonWithFriendlyEnums()
+        {
+            SetupResponse(HttpStatusCode.OK, LoadSample());
+
+            var response = await _client.GetAsync("/Flood");
+
+            var content = await response.Content.ReadAsStringAsync();
+            StringAssert.Contains("\"severity\":\"Amber\"", content);
+            StringAssert.Contains("\"action\":\"Ignore\"", content);
+        }
+
         private void SetupResponse(HttpStatusCode statusCode, string content)
         {
             _mockMessageHandler
