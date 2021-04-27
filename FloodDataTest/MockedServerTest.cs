@@ -78,14 +78,16 @@ namespace FloodDataTest
                 floods.Select(flood => flood.EaAreaName).Distinct());
         }
 
-        [Test]
-        public async Task GetFlood_WithNotFoundFromEa_ReturnsNotFound()
+        [TestCase(HttpStatusCode.NotFound)]
+        [TestCase(HttpStatusCode.BadGateway)]
+        [TestCase(HttpStatusCode.InternalServerError)]
+        public async Task GetFlood_WithNotFoundFromEa_ReturnsNotFound(HttpStatusCode eaResponseStatusCode)
         {
-            SetupResponse(HttpStatusCode.NotFound, "");
+            SetupResponse(eaResponseStatusCode, "");
 
             var response = await _client.GetAsync("/Flood");
 
-            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.ServiceUnavailable, response.StatusCode);
         }
 
         [Test]

@@ -20,6 +20,7 @@ namespace Landmark.FloodData.Gateway
         public async Task<EnvironmentAgencyFloodAlertServicePayload> GetEnvironmentAgencyData()
         {
             using var client = _clientFactory.CreateClient("EnvironmentAgency");
+
             var response = await client.GetAsync("flood-monitoring/id/floods");
             if (response.StatusCode != HttpStatusCode.OK)
                 return null;

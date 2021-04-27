@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 using Landmark.FloodData.Processor;
@@ -23,7 +24,7 @@ namespace Landmark.FloodData.Controllers
         {
             var environmentAgencyFloodAlerts = await _environmentAgencyGateway.GetEnvironmentAgencyData();
             if (environmentAgencyFloodAlerts == null)
-                return NotFound();
+                return StatusCode((int)HttpStatusCode.ServiceUnavailable);
             
             var processedData = _floodDataProcessor.ProcessDataData(environmentAgencyFloodAlerts);
 

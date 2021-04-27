@@ -15,9 +15,5 @@
     <ProjectReference Include="..\Landmark.FloodData.Processor\Landmark.FloodData.Processor.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 
 </Project>
