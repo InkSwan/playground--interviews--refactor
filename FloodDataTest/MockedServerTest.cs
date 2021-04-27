@@ -32,7 +32,11 @@ namespace FloodDataTest
             _factory = new WebApplicationFactory<Startup>();
             _client = _factory.WithWebHostBuilder(builder =>
             {
-                builder.ConfigureServices(services => { services.AddSingleton(_mockMessageHandler.Object); });
+                builder.ConfigureServices(services =>
+                {
+                    services.AddHttpClient("EnvironmentAgency")
+                        .ConfigurePrimaryHttpMessageHandler(() => _mockMessageHandler.Object);
+                });
             }).CreateClient();
         }
 

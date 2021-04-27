@@ -18,6 +18,10 @@ namespace FloodDataTest
         public async Task GetFlood_WithFromActualServerWithNoRegion_ReturnsUnfilteredData()
         {
             var builder = new WebHostBuilder()
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config.AddJsonFile("appsettings.development.json");
+                })
                 .UseStartup<Startup>();
 
             var testServer = new TestServer(builder);

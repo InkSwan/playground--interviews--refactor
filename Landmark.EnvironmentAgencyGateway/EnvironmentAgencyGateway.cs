@@ -10,16 +10,16 @@ namespace Landmark.FloodData.Gateway
 {
     public class EnvironmentAgencyGateway : IEnvironmentAgencyGateway
     {
-        private readonly HttpMessageHandler _httpMessageHandler;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public EnvironmentAgencyGateway(HttpMessageHandler httpMessageHandler)
+        public EnvironmentAgencyGateway(IHttpClientFactory clientFactory)
         {
-            _httpMessageHandler = httpMessageHandler;
+            _clientFactory = clientFactory;
         }
 
         public async Task<EnvironmentAgencyFloodAlertServicePayload> GetEnvironmentAgencyData()
         {
-            using var client = new HttpClient(_httpMessageHandler) {BaseAddress = new Uri("http://environment.data.gov.uk")};
+            using var client = _clientFactory.CreateClient("EnvironmentAgency");
             var response = await client.GetAsync("flood-monitoring/id/floods");
             if (response.StatusCode != HttpStatusCode.OK)
                 return null;

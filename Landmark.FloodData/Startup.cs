@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using Landmark.FloodData.Gateway;
 using Landmark.FloodData.Processor;
@@ -22,6 +23,11 @@ namespace Landmark.FloodData
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddHttpClient("EnvironmentAgency", client =>
+            {
+                client.BaseAddress = new Uri(Configuration["EnvironmentAgencyBaseUrl"]);
+            });
 
             services.AddScoped<HttpMessageHandler, HttpClientHandler>();
             services.AddScoped<IEnvironmentAgencyGateway, EnvironmentAgencyGateway>();
